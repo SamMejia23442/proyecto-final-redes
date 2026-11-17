@@ -1,0 +1,35 @@
+// /etc/bind/named.conf.options  (vm-dns-01, 10.0.0.105)
+// Resolver interno de AgroSense GT. Autoritativo para agrosense.local y
+// recursivo (vía Azure DNS) SOLO para las subredes internas.
+
+acl internas {
+    10.0.0.0/27;     // snet-ventas
+    10.0.0.64/27;    // snet-ti
+    10.0.0.96/28;    // snet-datacenter
+    127.0.0.1;
+};
+
+acl visitas {
+    10.0.0.32/27;    // snet-visitas: no debe conocer los nombres internos
+};
+
+options {
+    directory "/var/cache/bind";
+
+    listen-on { 10.0.0.105; 127.0.0.1; };
+    listen-on-v6 { none; };
+
+    // Control de acceso (defensa en profundidad además del NSG y ufw)
+    blackhole        { visitas; };   // ignora por completo a Visitas
+    allow-query      { internas; };
+    allow-recursion  { internas; };
+    allow-transfer   { none; };      // nadie puede descargar la zona (AXFR)
+
+    // Lo que no es agrosense.local se reenvía al resolver de Azure
+    recursion yes;
+    forwarders { 168.63.129.16; };
+    forward only;
+
+    dnssec-validation auto;
+    version "no disponible";         // hardening: no revelar versión de BIND
+};

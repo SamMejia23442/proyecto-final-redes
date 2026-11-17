@@ -1,0 +1,11 @@
+; /etc/bind/zones/db.10.0.0  - zona inversa 10.0.0.0/24
+$TTL    3600
+@       IN  SOA ns1.agrosense.local. admin.agrosense.local. (
+                2026111601 3600 900 604800 300 )
+@       IN  NS      ns1.agrosense.local.
+;
+4       IN  PTR     ventas01.agrosense.local.
+68      IN  PTR     ti01.agrosense.local.
+105     IN  PTR     ns1.agrosense.local.
+106     IN  PTR     rrhh.agrosense.local.
+116     IN  PTR     web-dmz.agrosense.local.

@@ -1,0 +1,22 @@
+; /etc/bind/zones/db.agrosense.local  - zona directa interna de AgroSense GT
+$TTL    3600
+@       IN  SOA ns1.agrosense.local. admin.agrosense.local. (
+                2026111601  ; serial (AAAAMMDDnn) - subirlo en cada cambio
+                3600        ; refresh
+                900         ; retry
+                604800      ; expire
+                300 )       ; TTL negativo
+;
+@           IN  NS      ns1.agrosense.local.
+;
+; Servicios
+ns1         IN  A       10.0.0.105      ; vm-dns-01 (este servidor)
+dns         IN  CNAME   ns1
+rrhh        IN  A       10.0.0.106      ; vm-rrhh-web - Intranet de RRHH
+intranet    IN  CNAME   rrhh
+web-dmz     IN  A       10.0.0.116      ; vm-dmz-web (IP privada en la DMZ)
+www         IN  CNAME   agrosense-ventas-gt.brazilsouth.cloudapp.azure.com.  ; web pública
+;
+; Hosts por subred
+ti01        IN  A       10.0.0.68       ; vm-ti-01     (snet-ti)
+ventas01    IN  A       10.0.0.4        ; vm-ventas-01 (snet-ventas)
