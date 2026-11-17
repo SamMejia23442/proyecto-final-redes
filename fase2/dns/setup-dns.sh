@@ -1,10 +1,25 @@
 #!/bin/bash
-# Configura vm-dns-01 (10.0.0.105) con BIND9. Autocontenido, para az vm run-command. Corre como root.
+# Configura BIND9 en vm-rrhh-web con la IP de servicio 10.0.0.105. Autocontenido (az vm run-command). Corre como root.
 # Generado a partir de named.conf.options, named.conf.local, db.agrosense.local y db.10.0.0
 set -e
 export DEBIAN_FRONTEND=noninteractive
+
+# 1) IP secundaria en el sistema operativo (Azure solo entrega la primaria por DHCP)
+cat > /etc/netplan/60-dns-ip.yaml << 'CONF'
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses: [10.0.0.105/28]
+CONF
+chmod 600 /etc/netplan/60-dns-ip.yaml
+netplan apply
+sleep 3
+ip -4 -o addr show eth0
+
+# 2) BIND9
 apt-get update -y
-apt-get install -y bind9 bind9-utils dnsutils ufw
+apt-get install -y bind9 bind9-utils dnsutils
 mkdir -p /etc/bind/zones
 cat > /etc/bind/named.conf.options << 'CONF'
 // /etc/bind/named.conf.options  (vm-dns-01, 10.0.0.105)
@@ -95,25 +110,21 @@ $TTL    3600
 116     IN  PTR     web-dmz.agrosense.local.
 CONF
 chown -R root:bind /etc/bind/zones && chmod 640 /etc/bind/zones/*
-# Solo IPv4
 sed -i 's/^OPTIONS=.*/OPTIONS="-u bind -4"/' /etc/default/named
 named-checkconf
 named-checkzone agrosense.local /etc/bind/zones/db.agrosense.local
 named-checkzone 0.0.10.in-addr.arpa /etc/bind/zones/db.10.0.0
 systemctl enable named
 systemctl restart named
-# Hardening: DNS solo desde subredes internas (no Visitas), SSH solo desde TI
-ufw --force reset
-ufw default deny incoming
-ufw default allow outgoing
+
+# 3) ufw: se AGREGAN reglas (sin reset, para no borrar las de la intranet). DNS solo desde subredes internas.
 for net in 10.0.0.0/27 10.0.0.64/27 10.0.0.96/28; do
-  ufw allow from $net to any port 53 proto udp
-  ufw allow from $net to any port 53 proto tcp
+  ufw allow from $net to 10.0.0.105 port 53 proto udp comment 'DNS interno'
+  ufw allow from $net to 10.0.0.105 port 53 proto tcp comment 'DNS interno'
 done
-ufw allow from 10.0.0.64/27 to any port 22 proto tcp
-ufw --force enable
 ufw status numbered
+
 echo "--- prueba local ---"
-dig +short @127.0.0.1 rrhh.agrosense.local
-dig +short @127.0.0.1 -x 10.0.0.106
-dig +short @127.0.0.1 google.com | head -2
+dig +short @10.0.0.105 rrhh.agrosense.local
+dig +short @10.0.0.105 -x 10.0.0.106
+dig +short @10.0.0.105 google.com | head -2

@@ -1,0 +1,27 @@
+Enable succeeded: 
+[stdout]
+== vm-cliente-01  IP: 10.0.0.4   DNS:  10.0.0.105
+
+## 1. Resolución directa (consultando al DNS interno)
+Server:		10.0.0.105
+Address:	10.0.0.105#53
+
+Name:	rrhh.agrosense.local
+Address: 10.0.0.106
+
+## 2. Nombre corto vía resolver del sistema (dominio de búsqueda)
+Name:	rrhh.agrosense.local
+Address: 10.0.0.106
+
+## 3. Resolución inversa
+106.0.0.10.in-addr.arpa	name = rrhh.agrosense.local.
+## 4. Nombre de Internet (reenviado a Azure DNS)
+Name:	google.com
+Address: 172.217.28.206
+
+## 5. Transferencia de zona (debe fallar)
+; Transfer failed.
+## 6. Intranet por nombre
+<h1>Intranet de Recursos Humanos</h1>
+
+[stderr]
