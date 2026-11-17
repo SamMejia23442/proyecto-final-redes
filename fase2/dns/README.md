@@ -11,7 +11,7 @@
 | DNS de la VNet | `10.0.0.105` (Custom DNS de `vnet-agrosense-gt`) |
 
 ### ¿Por qué no hay una VM de DNS dedicada?
-Azure for Students limita a **6 vCPU por región**, y en Brazil South el tamaño más pequeño con capacidad y cuota es de 2 vCPU. `vm-rrhh-web` y `vm-dmz-web` ya usan 4 (las VMs desasignadas también cuentan). Quedaba espacio para **una sola** VM más. Se usó para una **VM cliente de pruebas** (`vm-cliente-01`), sin la cual no habría evidencia desde Ventas, TI ni Visitas. El DNS tiene su propia IP (.105), separada de la web (.106), así que se puede llevar a una VM dedicada solo moviendo esa IP.
+Azure for Students tiene dos límites en Brazil South: **6 vCPU en total por región** y **4 vCPU por familia de tamaño**. Las VMs apagadas (desasignadas) también cuentan; solo eliminarlas libera cuota. El tamaño más pequeño con capacidad y cuota es de 2 vCPU. `vm-rrhh-web` y `vm-dmz-web` (Standard_D2as_v4) llenan su familia DASv4 (4/4), así que quedaba espacio para **una sola** VM más, de otra familia: `vm-cliente-01` (Standard_D2s_v4, DSv4 2/4). Total: **6/6 vCPU, 3 VMs**. Se usó para una **VM cliente de pruebas** (`vm-cliente-01`), sin la cual no habría evidencia desde Ventas, TI ni Visitas. El DNS tiene su propia IP (.105), separada de la web (.106), así que se puede llevar a una VM dedicada solo moviendo esa IP.
 
 ## Registros
 
