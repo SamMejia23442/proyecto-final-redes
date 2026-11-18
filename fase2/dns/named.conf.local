@@ -1,0 +1,12 @@
+// /etc/bind/named.conf.local  (vm-rrhh-web)
+// Zona directa y zona inversa de la red interna 10.0.0.0/24
+
+zone "agrosense.local" {
+    type master;
+    file "/etc/bind/zones/db.agrosense.local";
+};
+
+zone "0.0.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/zones/db.10.0.0";
+};

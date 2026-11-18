@@ -1,0 +1,15 @@
+$ az network watcher test-ip-flow -g rg-agrosense-prod --vm <vm> --direction <dir> --protocol <proto> --local <ip:puerto> --remote <ip:puerto>
+VM             DIR      PROTO LOCAL              REMOTO               RESULTADO REGLA
+vm-cliente-01  Inbound  TCP  10.0.0.4:22        10.0.0.68:50000      Allow defaultSecurityRules/AllowVnetInBound 
+vm-rrhh-web    Inbound  TCP  10.0.0.106:80      10.0.0.4:50000       Allow securityRules/Allow-Intranet-Web 
+vm-rrhh-web    Inbound  TCP  10.0.0.106:22      10.0.0.4:50000       Deny securityRules/Deny-VNet-Inbound 
+vm-rrhh-web    Inbound  TCP  10.0.0.106:22      10.0.0.68:50000      Allow securityRules/Allow-SSH-From-TI 
+vm-rrhh-web    Inbound  UDP  10.0.0.105:53      10.0.0.4:50000       Allow securityRules/Allow-DNS-Internal 
+vm-rrhh-web    Inbound  UDP  10.0.0.105:53      10.0.0.36:50000      Deny securityRules/Deny-DNS-From-Visitas 
+vm-rrhh-web    Inbound  TCP  10.0.0.106:80      10.0.0.36:50000      Deny securityRules/Deny-VNet-Inbound 
+vm-rrhh-web    Inbound  TCP  10.0.0.106:80      203.0.113.10:50000   Deny defaultSecurityRules/DenyAllInBound 
+vm-dmz-web     Inbound  TCP  10.0.0.116:443     203.0.113.10:50000   Allow securityRules/Allow-Web-Internet 
+vm-dmz-web     Inbound  TCP  10.0.0.116:22      203.0.113.10:50000   Deny defaultSecurityRules/DenyAllInBound 
+vm-dmz-web     Inbound  TCP  10.0.0.116:22      10.0.0.68:50000      Allow securityRules/Allow-SSH-From-TI 
+vm-dmz-web     Outbound TCP  10.0.0.116:50000   10.0.0.106:80        Deny securityRules/Deny-DMZ-To-VNet 
+vm-dmz-web     Outbound TCP  10.0.0.116:50000   10.0.0.68:22         Deny securityRules/Deny-DMZ-To-VNet 

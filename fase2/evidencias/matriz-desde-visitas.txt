@@ -1,0 +1,13 @@
+$ az vm run-command invoke -g rg-agrosense-prod -n vm-cliente-01 --command-id RunShellScript --scripts @prueba-matriz.sh 
+== Matriz de bloqueos desde vm-cliente-01 | 10.0.0.36 (snet-visitas) | 2026-11-17 23:39:38
+DESTINO                        PRUEBA                 RESULTADO
+DNS interno 10.0.0.105         DNS 53/udp             BLOQUEADO (sin respuesta)
+Intranet 10.0.0.106 (DC)       HTTP 80                BLOQUEADO (sin respuesta)
+Intranet 10.0.0.106 (DC)       SSH 22                 BLOQUEADO (sin respuesta)
+Intranet 10.0.0.106 (DC)       ICMP ping              BLOQUEADO (sin respuesta)
+Web DMZ 10.0.0.116             HTTPS 443              BLOQUEADO (sin respuesta)
+Web DMZ 10.0.0.116             SSH 22                 BLOQUEADO (sin respuesta)
+Web DMZ 10.0.0.116             ICMP ping              BLOQUEADO (sin respuesta)
+Internet www.google.com        HTTPS 443              PERMITIDO (HTTP 200)
+Web publica (dominio)          HTTP 80                PERMITIDO (HTTP 301)
+Web publica (dominio)          HTTPS 443              PERMITIDO (HTTP 200)

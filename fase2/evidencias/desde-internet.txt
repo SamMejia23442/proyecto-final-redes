@@ -1,0 +1,36 @@
+$ curl -sI http://agrosense-ventas-gt.brazilsouth.cloudapp.azure.com
+HTTP/1.1 301 Moved Permanently
+Location: https://agrosense-ventas-gt.brazilsouth.cloudapp.azure.com/
+
+$ curl -sI https://agrosense-ventas-gt.brazilsouth.cloudapp.azure.com
+HTTP/1.1 200 OK
+Server: nginx
+Strict-Transport-Security: max-age=31536000
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: no-referrer
+
+$ curl -s https://agrosense-ventas-gt.brazilsouth.cloudapp.azure.com | grep -o '<h1>.*</h1>'
+<h1>AgroSense GT</h1>
+
+$ openssl s_client -connect agrosense-ventas-gt.brazilsouth.cloudapp.azure.com:443 -servername agrosense-ventas-gt.brazilsouth.cloudapp.azure.com | openssl x509 -noout -subject -issuer -dates
+subject= /CN=agrosense-ventas-gt.brazilsouth.cloudapp.azure.com
+issuer= /C=US/O=Let's Encrypt/CN=YR2
+notBefore=Nov 17 03:15:18 2026 GMT
+notAfter=Feb 15 03:15:17 2027 GMT
+
+$ dig +short agrosense-ventas-gt.brazilsouth.cloudapp.azure.com
+191.232.198.113
+
+$ nc -vz -w 5 191.232.198.113 22    # SSH de la DMZ desde Internet
+nc: connectx to 191.232.198.113 port 22 (tcp) failed: Operation timed out
+
+$ dig +short rrhh.agrosense.local @8.8.8.8   # el nombre interno no existe en Internet
+(sin respuesta: el nombre no existe fuera de la red)
+
+$ az vm list-ip-addresses -g rg-agrosense-prod -o table   # la intranet no tiene IP pública
+VM             IPPrivada               IPPublica
+-------------  ----------------------  ---------------
+vm-cliente-01  10.0.0.4
+vm-dmz-web     10.0.0.116              191.232.198.113
+vm-rrhh-web    10.0.0.106, 10.0.0.105

@@ -1,0 +1,49 @@
+$ az vm run-command invoke -g rg-agrosense-prod -n vm-cliente-01 --command-id RunShellScript --scripts @hardening-extra.sh --parameters cliente
+[*] hardening-extra en vm-cliente-01 | rol: cliente | 2026-11-17 23:47:56
+[ok] sysctl aplicado
+[ok] deshabilitado: snapd.service
+[ok] deshabilitado: snapd.socket
+[ok] deshabilitado: snapd.seeded.service
+[ok] deshabilitado: packagekit.service
+[ok] deshabilitado: multipathd.service
+[ok] deshabilitado: multipathd.socket
+[ok] eliminado: ftp
+[ok] SSH recargado
+== vm-cliente-01 — puertos en escucha
+Netid  Local             Peer
+udp    127.0.0.53%lo:53  users:(("systemd-resolve",pid=511,fd=13))
+udp    10.0.0.4%eth0:68  users:(("systemd-network",pid=509,fd=18))
+udp    127.0.0.1:323     users:(("chronyd",pid=601,fd=6))
+udp    [::1]:323         users:(("chronyd",pid=601,fd=7))
+tcp    0.0.0.0:22        users:(("sshd",pid=602,fd=3))
+tcp    127.0.0.53%lo:53  users:(("systemd-resolve",pid=511,fd=14))
+tcp    [::]:22           users:(("sshd",pid=602,fd=4))
+
+== ufw
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    10.0.0.64/27              
+
+
+== SSH efectivo
+maxauthtries 3
+clientaliveinterval 300
+permitrootlogin no
+passwordauthentication no
+kbdinteractiveauthentication no
+x11forwarding no
+allowtcpforwarding no
+allowagentforwarding no
+
+== sysctl
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.tcp_syncookies = 1
+[ok] Listo. Evidencia en /var/log/hardening/extra_despues.txt
