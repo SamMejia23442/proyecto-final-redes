@@ -10,7 +10,7 @@ $TTL    3600
 @           IN  NS      ns1.agrosense.local.
 ;
 ; Servicios
-ns1         IN  A       10.0.0.105      ; vm-dns-01 (este servidor)
+ns1         IN  A       10.0.0.105      ; IP de servicio del DNS (IP secundaria de vm-rrhh-web)
 dns         IN  CNAME   ns1
 rrhh        IN  A       10.0.0.106      ; vm-rrhh-web - Intranet de RRHH
 intranet    IN  CNAME   rrhh
@@ -18,5 +18,5 @@ web-dmz     IN  A       10.0.0.116      ; vm-dmz-web (IP privada en la DMZ)
 www         IN  CNAME   agrosense-ventas-gt.brazilsouth.cloudapp.azure.com.  ; web pública
 ;
 ; Hosts por subred
-ti01        IN  A       10.0.0.68       ; vm-ti-01     (snet-ti)
-ventas01    IN  A       10.0.0.4        ; vm-ventas-01 (snet-ventas)
+ti01        IN  A       10.0.0.68       ; vm-cliente-01 cuando está en snet-ti
+ventas01    IN  A       10.0.0.4        ; vm-cliente-01 en snet-ventas

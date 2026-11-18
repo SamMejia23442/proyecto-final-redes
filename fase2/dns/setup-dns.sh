@@ -22,7 +22,7 @@ apt-get update -y
 apt-get install -y bind9 bind9-utils dnsutils
 mkdir -p /etc/bind/zones
 cat > /etc/bind/named.conf.options << 'CONF'
-// /etc/bind/named.conf.options  (vm-dns-01, 10.0.0.105)
+// /etc/bind/named.conf.options  (vm-rrhh-web, IP de servicio 10.0.0.105)
 // Resolver interno de AgroSense GT. Autoritativo para agrosense.local y
 // recursivo (vía Azure DNS) SOLO para las subredes internas.
 
@@ -59,7 +59,7 @@ options {
 };
 CONF
 cat > /etc/bind/named.conf.local << 'CONF'
-// /etc/bind/named.conf.local  (vm-dns-01)
+// /etc/bind/named.conf.local  (vm-rrhh-web)
 // Zona directa y zona inversa de la red interna 10.0.0.0/24
 
 zone "agrosense.local" {
@@ -85,7 +85,7 @@ $TTL    3600
 @           IN  NS      ns1.agrosense.local.
 ;
 ; Servicios
-ns1         IN  A       10.0.0.105      ; vm-dns-01 (este servidor)
+ns1         IN  A       10.0.0.105      ; IP de servicio del DNS (IP secundaria de vm-rrhh-web)
 dns         IN  CNAME   ns1
 rrhh        IN  A       10.0.0.106      ; vm-rrhh-web - Intranet de RRHH
 intranet    IN  CNAME   rrhh
@@ -93,8 +93,8 @@ web-dmz     IN  A       10.0.0.116      ; vm-dmz-web (IP privada en la DMZ)
 www         IN  CNAME   agrosense-ventas-gt.brazilsouth.cloudapp.azure.com.  ; web pública
 ;
 ; Hosts por subred
-ti01        IN  A       10.0.0.68       ; vm-ti-01     (snet-ti)
-ventas01    IN  A       10.0.0.4        ; vm-ventas-01 (snet-ventas)
+ti01        IN  A       10.0.0.68       ; vm-cliente-01 cuando está en snet-ti
+ventas01    IN  A       10.0.0.4        ; vm-cliente-01 en snet-ventas
 CONF
 cat > /etc/bind/zones/db.10.0.0 << 'CONF'
 ; /etc/bind/zones/db.10.0.0  - zona inversa 10.0.0.0/24

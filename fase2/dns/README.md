@@ -1,6 +1,6 @@
 # DNS interno (BIND9) — Pablo Cabrera 231156
 
-**Estado: desplegado y probado el 2026-11-16** (suscripción Azure for Students, Brazil South).
+**Estado: desplegado el 2026-11-16 y probado de nuevo el 2026-11-17, después del cierre de los NSG y del hardening** (suscripción Azure for Students, Brazil South).
 
 | Dato | Valor |
 |---|---|

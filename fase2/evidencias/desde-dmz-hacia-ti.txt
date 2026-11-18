@@ -1,0 +1,8 @@
+$ az vm run-command invoke -g rg-agrosense-prod -n vm-dmz-web --command-id RunShellScript --scripts @prueba-servidor.sh --parameters 10.0.0.68
+== Pruebas desde vm-dmz-web | 10.0.0.116 | 2026-11-17 23:37:01
+DESTINO                        PRUEBA         RESULTADO
+Cliente 10.0.0.68 (TI)         ICMP ping      BLOQUEADO (sin respuesta)
+Intranet 10.0.0.106 (DC)       HTTP 80        BLOQUEADO (sin respuesta)
+DNS interno 10.0.0.105         DNS 53/tcp     BLOQUEADO (sin respuesta)
+Intranet 10.0.0.106 (DC)       ICMP ping      BLOQUEADO (sin respuesta)
+Internet www.google.com        HTTPS 443      PERMITIDO (HTTP 200)

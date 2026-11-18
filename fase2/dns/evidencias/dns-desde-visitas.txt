@@ -1,5 +1,4 @@
-Enable succeeded: 
-[stdout]
+$ az vm run-command invoke -g rg-agrosense-prod -n vm-cliente-01 --command-id RunShellScript --scripts @prueba-visitas.sh 
 == vm-cliente-01  IP: 10.0.0.36   DNS:  168.63.129.16
 
 ## 1. Consulta directa al DNS interno (debe dar timeout)
@@ -11,8 +10,6 @@ Enable succeeded:
 
 ## 3. Internet sí funciona
 Name:	google.com
-Address: 142.250.79.206
+Address: 172.217.29.78
 
 HTTP 301 google.com
-
-[stderr]

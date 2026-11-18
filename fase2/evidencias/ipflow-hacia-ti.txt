@@ -1,0 +1,7 @@
+$ az network watcher test-ip-flow -g rg-agrosense-prod --vm vm-cliente-01 --direction Inbound --protocol <proto> --local 10.0.0.68:<puerto> --remote <origen>:50000   (cliente en snet-ti)
+VM             DIR      PROTO LOCAL              REMOTO               RESULTADO REGLA
+vm-cliente-01  Inbound  TCP  10.0.0.68:22       10.0.0.4:50000       Deny securityRules/Deny-Inbound-VNet 
+vm-cliente-01  Inbound  TCP  10.0.0.68:22       10.0.0.36:50000      Deny securityRules/Deny-Inbound-VNet 
+vm-cliente-01  Inbound  TCP  10.0.0.68:22       10.0.0.106:50000     Deny securityRules/Deny-Inbound-VNet 
+vm-cliente-01  Inbound  TCP  10.0.0.68:22       10.0.0.116:50000     Deny securityRules/Deny-Inbound-VNet 
+vm-cliente-01  Inbound  TCP  10.0.0.68:22       10.0.0.70:50000      Allow securityRules/Allow-TI-Intra 

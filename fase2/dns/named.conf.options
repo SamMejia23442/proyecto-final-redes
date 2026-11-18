@@ -1,4 +1,4 @@
-// /etc/bind/named.conf.options  (vm-dns-01, 10.0.0.105)
+// /etc/bind/named.conf.options  (vm-rrhh-web, IP de servicio 10.0.0.105)
 // Resolver interno de AgroSense GT. Autoritativo para agrosense.local y
 // recursivo (vía Azure DNS) SOLO para las subredes internas.
 

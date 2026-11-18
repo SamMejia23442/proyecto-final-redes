@@ -1,0 +1,9 @@
+$ az network vnet subnet list -g rg-agrosense-prod --vnet-name vnet-agrosense-gt --query "[].{Subred:name, Prefijo:addressPrefix, NSG:networkSecurityGroup.id}"   (id resumido al nombre)
+Subred           Prefijo         NSG             
+snet-ventas      10.0.0.0/27     nsg-ventas      
+snet-visitas     10.0.0.32/27    nsg-visitas     
+snet-ti          10.0.0.64/27    nsg-ti          
+snet-datacenter  10.0.0.96/28    nsg-datacenter  
+snet-dmz         10.0.0.112/28   nsg-dmz         
+$ az network vnet show -g rg-agrosense-prod -n vnet-agrosense-gt --query dhcpOptions.dnsServers -o tsv
+10.0.0.105

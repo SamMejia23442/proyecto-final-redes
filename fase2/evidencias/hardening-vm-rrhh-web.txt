@@ -1,0 +1,69 @@
+$ az vm run-command invoke -g rg-agrosense-prod -n vm-rrhh-web --command-id RunShellScript --scripts @hardening-extra.sh --parameters rrhh
+[*] hardening-extra en vm-rrhh-web | rol: rrhh | 2026-11-17 23:47:56
+[ok] sysctl aplicado
+[ok] deshabilitado: snapd.service
+[ok] deshabilitado: snapd.socket
+[ok] deshabilitado: snapd.seeded.service
+[ok] deshabilitado: packagekit.service
+[ok] deshabilitado: multipathd.service
+[ok] deshabilitado: multipathd.socket
+[ok] SSH recargado
+[ok] ufw: 80 desde Data Center
+== vm-rrhh-web — puertos en escucha
+Netid  Local               Peer
+udp    10.0.0.105:53       users:(("named",pid=4833,fd=6))
+udp    10.0.0.105:53       users:(("named",pid=4833,fd=31))
+udp    127.0.0.1:53        users:(("named",pid=4833,fd=25))
+udp    127.0.0.1:53        users:(("named",pid=4833,fd=26))
+udp    127.0.0.53%lo:53    users:(("systemd-resolve",pid=509,fd=13))
+udp    10.0.0.106%eth0:68  users:(("systemd-network",pid=504,fd=17))
+udp    127.0.0.1:323       users:(("chronyd",pid=794,fd=6))
+udp    [::1]:323           users:(("chronyd",pid=794,fd=7))
+tcp    0.0.0.0:22          users:(("sshd",pid=907,fd=3))
+tcp    0.0.0.0:80          users:(("nginx",pid=2779,fd=6),("nginx",pid=2778,fd=6),("nginx",pid=2605,fd=6))
+tcp    127.0.0.53%lo:53    users:(("systemd-resolve",pid=509,fd=14))
+tcp    127.0.0.1:953       users:(("named",pid=4833,fd=35))
+tcp    127.0.0.1:953       users:(("named",pid=4833,fd=36))
+tcp    10.0.0.105:53       users:(("named",pid=4833,fd=32))
+tcp    10.0.0.105:53       users:(("named",pid=4833,fd=33))
+tcp    127.0.0.1:53        users:(("named",pid=4833,fd=27))
+tcp    127.0.0.1:53        users:(("named",pid=4833,fd=28))
+tcp    [::]:22             users:(("sshd",pid=907,fd=4))
+
+== ufw
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    10.0.0.64/27              
+80/tcp                     ALLOW IN    10.0.0.64/27              
+80/tcp                     ALLOW IN    10.0.0.0/27               
+10.0.0.105 53/udp          ALLOW IN    10.0.0.0/27                # DNS interno
+10.0.0.105 53/tcp          ALLOW IN    10.0.0.0/27                # DNS interno
+10.0.0.105 53/udp          ALLOW IN    10.0.0.64/27               # DNS interno
+10.0.0.105 53/tcp          ALLOW IN    10.0.0.64/27               # DNS interno
+10.0.0.105 53/udp          ALLOW IN    10.0.0.96/28               # DNS interno
+10.0.0.105 53/tcp          ALLOW IN    10.0.0.96/28               # DNS interno
+80/tcp                     ALLOW IN    10.0.0.96/28               # Intranet desde Data Center
+
+
+== SSH efectivo
+maxauthtries 3
+clientaliveinterval 300
+permitrootlogin no
+passwordauthentication no
+kbdinteractiveauthentication no
+x11forwarding no
+allowtcpforwarding no
+allowagentforwarding no
+
+== sysctl
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.all.log_martians = 1
+net.ipv4.tcp_syncookies = 1
+[ok] Listo. Evidencia en /var/log/hardening/extra_despues.txt
